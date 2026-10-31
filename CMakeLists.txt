@@ -20,6 +20,7 @@ endif()
 
 # Core library: everything graded lives here.
 add_library(jss_core
+  core/src/utf8.cpp
   core/src/version.cpp
 )
 target_include_directories(jss_core PUBLIC core/include)
@@ -41,6 +42,7 @@ if(JSS_BUILD_TESTS)
   enable_testing()
   add_executable(jss_tests
     tests/test_smoke.cpp
+    tests/test_utf8.cpp
   )
   target_link_libraries(jss_tests PRIVATE jss_core Catch2::Catch2WithMain)
 

@@ -22,3 +22,6 @@ jobs:
 
       - name: Test
         run: ctest --test-dir build --output-on-failure
+
+      - name: Test data script
+        run: python3 data/test_build_dict.py

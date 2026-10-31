@@ -49,7 +49,7 @@ The trie's one essential operation is **common-prefix search**: given the text a
 
 **Data sources** (all free; credit them in the README):
 
-- JMDict, using the [jmdict-simplified](https://github.com/scriptin/jmdict-simplified) JSON release so nobody has to parse the XML and its entities. License CC BY-SA 4.0.
+- JMDict, using the official `JMdict_e.gz` XML. The [jmdict-simplified](https://github.com/scriptin/jmdict-simplified) JSON release was the first choice, but it reduces the priority tags below to one `common` boolean, which the cost model can't use. License CC BY-SA 4.0.
 - Frequency: JMDict's priority tags (`news1/2`, `ichi1/2`, `spec1/2`, `gai1/2`, `nf01`–`nf48`) are the base. They are coarse and missing on most entries, so consider adding a corpus frequency list (the ones Yomitan users install, such as JPDB or BCCWJ-based lists) as a stretch.
 - Pitch accent: the Kanjium accent list (word, reading, downstep position).
 
