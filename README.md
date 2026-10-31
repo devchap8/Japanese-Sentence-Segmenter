@@ -11,7 +11,7 @@ Final project for CSC 212 (Data Structures and Abstractions), University of Rhod
 3. Score each word by frequency and each pair of neighbors by part of speech, then run **Viterbi** to pick the cheapest path through the lattice.
 4. Show the result in the browser with pitch-accent underlines and a click-to-look-up dictionary popup.
 
-The trie is compared against a hash-set brute force and a sorted array with binary search, and Viterbi is compared against greedy longest match. See `REPORT.md` (coming) for results.
+The trie is compared against a hash-set brute force and a sorted array with binary search, and Viterbi is compared against greedy longest match. See `REPORT.md` (coming) for results and `docs/PLAN.md` for the full plan.
 
 ## Build and run
 
@@ -34,7 +34,7 @@ echo "猫が好きです" | ./build/jss             # segment text (not implemen
 | `bench/` | Benchmark harness and plot scripts |
 | `data/` | Dictionary preprocessing; sources and licenses |
 | `web/` | Browser frontend |
-| `docs/` | AI usage log and notes |
+| `docs/` | Project plan, AI usage log, notes |
 
 ## Data credits
 
