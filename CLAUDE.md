@@ -29,7 +29,7 @@ Word segmentation for Japanese. The repo name says "sentence", but the program s
 ## Status
 
 - Done: repo skeleton (CMake, Catch2 v3 via FetchContent, GitHub Actions on Ubuntu and macOS, README, `docs/ai-log.md`); `data/build_dict.py` (JMdict XML + Kanjium pitch data → `data/dict.tsv`, format in `data/README.md`); UTF-8 decoding and encoding (written by Claude at Devin's request; Devin's review pending).
-- Next (through Nov 4): pointer trie with randomized oracle tests, written by Devin; then the C++ dictionary loader.
+- Next (through Nov 4): pointer trie, written by Devin, passing `tests/test_trie.cpp` (tests written by Claude at Devin's request); then the C++ dictionary loader.
 - `core/src/version.cpp` is a placeholder; delete it once real code lands.
 
 ## Working rules
