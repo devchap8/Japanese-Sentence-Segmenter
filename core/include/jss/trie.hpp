@@ -10,6 +10,11 @@
 
 namespace jss {
 
+struct PrefixMatch {
+    std::size_t length;     
+    std::vector<int> ids;   
+};
+
 class Trie {
     private:
         struct Node {
@@ -29,6 +34,9 @@ class Trie {
         }
 
         std::vector<int> find(const std::u32string& word) const;
+
+        std::vector<PrefixMatch> common_prefix_search(const std::u32string& text,
+                                                    std::size_t start) const;
 };
 
 }  // namespace jss

@@ -1,5 +1,5 @@
-#include "trie.hpp";
-#include "utf8.hpp";
+#include "jss/utf8.hpp"
+#include "jss/trie.hpp"
 
 #include <vector>
 #include <utility>
@@ -65,6 +65,31 @@ std::vector<int> Trie::find(const std::u32string& word) const {
     return nodes[index].entry_ids;
 }
 
+std::vector<PrefixMatch> Trie::common_prefix_search(const std::u32string& text,
+    std::size_t start) const {
+
+        std::vector<PrefixMatch> matches;
+        int index = 0;
+        std::size_t count = 0;
+
+        for(std::size_t i = start; i < text.size(); i++) {
+            count++;
+            auto& children = nodes[index].children;
+            std::size_t pos = find_position(children, text[i]);
+
+            if(nodes[i].entry_ids.size() > 0) {
+                matches.push_back({count, nodes[i].entry_ids});
+            }
+            
+            if(!(pos < children.size() && children[pos].first == text[i])) {
+                break; // child does not exist
+            }
+
+            index = children[pos].second;
+        }
+
+        return matches;
+}
 
 
 } // namespace jss
