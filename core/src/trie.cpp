@@ -7,6 +7,11 @@
 
 namespace jss {
 
+Trie::Trie() {
+    Node head = {};
+    nodes.push_back(head);
+}
+
 // helper function: binary search for position to insert character while preserving order
 std::size_t find_position(const std::vector<std::pair<char32_t, int>>& children,
                         char32_t c) {
@@ -41,6 +46,23 @@ void Trie::insert(const std::u32string& word, int id) {
         index = new_index;
     }
     nodes[index].entry_ids.push_back(id);
+}
+
+std::vector<int> Trie::find(const std::u32string& word) const {
+    int index = 0;
+    for(char32_t c : word) {
+        auto& children = nodes[index].children;
+        std::size_t pos = find_position(children, c);     
+        
+        if (pos < children.size() && children[pos].first == c) {
+            index = children[pos].second;  // child exists: move down
+            continue;
+        } else { // child doesn't exist: return empty vector
+            std::vector<int> empty;
+            return empty;
+        }
+    }
+    return nodes[index].entry_ids;
 }
 
 
