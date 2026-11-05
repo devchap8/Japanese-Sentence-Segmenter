@@ -355,7 +355,7 @@ TEST_CASE("common-prefix search never reports an empty match", "[trie]") {
     REQUIRE(matches_at(trie, U"", 0).empty());
 }
 
-TEST_CASE("common-prefix search on すもももももももものうち", "[trie]") {
+TEST_CASE("common-prefix search on sumomo mo momo mo momo no uchi", "[trie]") {
     jss::Trie trie;
     trie.insert(U"すもも", 1);
     trie.insert(U"もも", 2);
