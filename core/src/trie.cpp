@@ -70,22 +70,21 @@ std::vector<PrefixMatch> Trie::common_prefix_search(const std::u32string& text,
 
         std::vector<PrefixMatch> matches;
         int index = 0;
-        std::size_t count = 0;
 
         for(std::size_t i = start; i < text.size(); i++) {
-            count++;
-            auto& children = nodes[index].children;
+            const auto& children = nodes[index].children;
             std::size_t pos = find_position(children, text[i]);
 
-            if(nodes[i].entry_ids.size() > 0) {
-                matches.push_back({count, nodes[i].entry_ids});
-            }
-            
-            if(!(pos < children.size() && children[pos].first == text[i])) {
+            if(pos == children.size() || children[pos].first != text[i]) {
                 break; // child does not exist
             }
 
             index = children[pos].second;
+
+            if(nodes[index].entry_ids.size() > 0) {
+                matches.push_back({i - start + 1, nodes[index].entry_ids});
+            }
+            
         }
 
         return matches;
