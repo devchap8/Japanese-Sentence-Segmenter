@@ -22,6 +22,7 @@ endif()
 
 # Core library: everything graded lives here.
 add_library(jss_core
+  core/src/dictionary.cpp
   core/src/trie.cpp
   core/src/utf8.cpp
   core/src/version.cpp
@@ -44,11 +45,16 @@ if(JSS_BUILD_TESTS)
 
   enable_testing()
   add_executable(jss_tests
+    tests/test_dictionary.cpp
     tests/test_smoke.cpp
     tests/test_trie.cpp
     tests/test_utf8.cpp
   )
   target_link_libraries(jss_tests PRIVATE jss_core Catch2::Catch2WithMain)
+  target_compile_definitions(jss_tests PRIVATE
+    JSS_TEST_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/data"
+    JSS_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data"
+  )
 
   list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
   include(Catch)

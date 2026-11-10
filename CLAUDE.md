@@ -31,7 +31,8 @@ A trie-backed Japanese dictionary lookup page.
 ## Status
 
 - Done: repo skeleton (CMake, Catch2 v3 via FetchContent, GitHub Actions on Ubuntu and macOS, README, `docs/ai-log.md`); `data/build_dict.py` (JMdict XML + Kanjium pitch data → `data/dict.tsv`, about 219k entries and 500k keys, format in `data/README.md`); UTF-8 decoding and encoding (written by Claude at Devin's request); pointer trie with `insert`, `find`, `common_prefix_search`, written by Devin and passing `tests/test_trie.cpp`.
-- Next: the C++ dictionary loader with fixture tests, and `jss lookup <word>` in the CLI. Don't insert the same (key, entry) pair twice, because `Trie::insert` would store a duplicate id. Measure the trie's memory early.
+- Done: dictionary loader `jss::load_dictionary` (`core/src/dictionary.cpp`, written by Claude at Devin's request; Devin's review pending), tests in `tests/test_dictionary.cpp`. It inserts each spelling once per entry. Full `dict.tsv` (Release, 2026-11-10): 218,995 entries, 499,678 keys, about 0.7 s to load, about 255 MB peak. Debug takes about 10 s. Hidden test `jss_tests "[real]"` loads the real file.
+- Next: `jss lookup <word>` in the CLI; then predictive search, ranking, baselines.
 - Open question for the instructor: does a plain trie count as the advanced structure? If not, the double-array trie moves before the trip.
 - `core/src/version.cpp` is a placeholder; delete it once real code lands.
 

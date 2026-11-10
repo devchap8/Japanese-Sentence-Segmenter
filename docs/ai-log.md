@@ -12,3 +12,4 @@ The course requires a report section on AI use: where AI tools were used, what t
 | 2026-11-01 | Claude | Trie tests, including the randomized oracle, to test my implementation against | `tests/test_trie.cpp`; the trie itself is mine | Checked against deliberately broken tries; the first version missed reads past the end of the text, so a test was added. |
 | 2026-11-05 | Claude | (none) | running test environment | Claude used a test name that ctest can't run on Windows (japanese characters get mangled), change to romaji. |
 | 2026-11-07 | Claude | Backup plan for the `dictionary` branch: trie-backed lookup page | `docs/PLAN-dictionary.md` | |
+| 2026-11-10 | Claude | `dict.tsv` loader and its tests | `core/src/dictionary.cpp`, `core/include/jss/dictionary.hpp`, `tests/test_dictionary.cpp`, `tests/data/mini_dict.tsv` (real entries copied from `dict.tsv`) | |

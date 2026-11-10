@@ -1,0 +1,42 @@
+# fixture: real entries copied from dict.tsv (JMdict 2026-10-31), used by tests/test_dictionary.cpp
+E	1358280
+K	食べる	ichi1,news2,nf25
+K	喰べる	
+R	たべる	ichi1,news2,nf25	*	2
+S	v1,vt	to eat
+S	v1,vt	to live on (e.g. a salary)	to live off	to subsist on
+E	1582710
+K	日本	news2,nf25,spec1
+R	にほん	news2,nf25,spec1	*	2
+R	にっぽん	spec1	*	3
+S	n	Japan
+E	1464530
+K	日本語	news1,nf02
+R	にほんご	news1,nf02	*	0
+R	にっぽんご		*	0
+S	n	Japanese (language)
+E	1237410
+K	橋	ichi1,news1,nf05
+R	はし	ichi1,news1,nf05	*	2
+S	n	bridge
+E	1476410
+K	箸	ichi1,news1,nf19
+R	はし	ichi1,news1,nf19	*	1
+S	n	chopsticks
+E	2151440
+K	橋	
+R	きょう		*	1
+S	n	pons	pons Varolii
+E	1000230
+K	明かん	
+R	あかん		*	
+R	アカン			
+R	あかーん		*	
+S	exp	useless	no good	hopeless
+S	exp	cannot	must not	not allowed
+E	1000110
+K	ＣＤプレーヤー	spec1
+K	ＣＤプレイヤー	
+R	シーディープレーヤー	spec1	ＣＤプレーヤー	
+R	シーディープレイヤー		ＣＤプレイヤー	
+S	n	CD player
