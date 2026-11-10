@@ -11,3 +11,4 @@ The course requires a report section on AI use: where AI tools were used, what t
 | 2026-10-31 | Claude | UTF-8 decoder and encoder with tests | `core/src/utf8.cpp`, `core/include/jss/utf8.hpp`, `tests/test_utf8.cpp` | |
 | 2026-11-01 | Claude | Trie tests, including the randomized oracle, to test my implementation against | `tests/test_trie.cpp`; the trie itself is mine | Checked against deliberately broken tries; the first version missed reads past the end of the text, so a test was added. |
 | 2026-11-05 | Claude | (none) | running test environment | Claude used a test name that ctest can't run on Windows (japanese characters get mangled), change to romaji. |
+| 2026-11-07 | Claude | Backup plan for the `dictionary` branch: trie-backed lookup page | `docs/PLAN-dictionary.md` | |
