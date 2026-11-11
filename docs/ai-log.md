@@ -13,3 +13,4 @@ The course requires a report section on AI use: where AI tools were used, what t
 | 2026-11-05 | Claude | (none) | running test environment | Claude used a test name that ctest can't run on Windows (japanese characters get mangled), change to romaji. |
 | 2026-11-07 | Claude | Backup plan for the `dictionary` branch: trie-backed lookup page | `docs/PLAN-dictionary.md` | |
 | 2026-11-10 | Claude | `dict.tsv` loader and its tests | `core/src/dictionary.cpp`, `core/include/jss/dictionary.hpp`, `tests/test_dictionary.cpp`, `tests/data/mini_dict.tsv` (real entries copied from `dict.tsv`) | |
+| 2026-11-11 | Claude | `jss lookup <word>` CLI command; removed the `version.cpp` placeholder | `cli/main.cpp`, CMake changes | |

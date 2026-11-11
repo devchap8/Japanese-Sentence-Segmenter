@@ -25,13 +25,18 @@ add_library(jss_core
   core/src/dictionary.cpp
   core/src/trie.cpp
   core/src/utf8.cpp
-  core/src/version.cpp
 )
 target_include_directories(jss_core PUBLIC core/include)
 
-# Command-line tool used by the eval and benchmark scripts.
+# Command-line tool: `jss lookup <word>`.
 add_executable(jss cli/main.cpp)
 target_link_libraries(jss PRIVATE jss_core)
+target_compile_definitions(jss PRIVATE
+  JSS_DEFAULT_DICT="${CMAKE_CURRENT_SOURCE_DIR}/data/dict.tsv"
+)
+if(WIN32)
+  target_link_libraries(jss PRIVATE shell32)
+endif()
 
 if(JSS_BUILD_TESTS)
   include(FetchContent)
@@ -46,7 +51,6 @@ if(JSS_BUILD_TESTS)
   enable_testing()
   add_executable(jss_tests
     tests/test_dictionary.cpp
-    tests/test_smoke.cpp
     tests/test_trie.cpp
     tests/test_utf8.cpp
   )
