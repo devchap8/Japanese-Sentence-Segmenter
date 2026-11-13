@@ -15,6 +15,12 @@ struct PrefixMatch {
     std::vector<int> ids;   
 };
 
+struct PredictiveMatch {
+    std::u32string key;
+    std::vector<int> ids;
+};
+
+
 class Trie {
     private:
         struct Node {
@@ -23,6 +29,7 @@ class Trie {
         };
 
         std::vector<Node> nodes;
+
 
     public:
         Trie();  
@@ -37,6 +44,9 @@ class Trie {
 
         std::vector<PrefixMatch> common_prefix_search(const std::u32string& text,
                                                     std::size_t start) const;
+
+        std::vector<PredictiveMatch> predictive_search(const std::u32string& prefix,
+                                                    std::size_t limit) const;
 };
 
 }  // namespace jss

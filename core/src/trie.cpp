@@ -90,5 +90,62 @@ std::vector<PrefixMatch> Trie::common_prefix_search(const std::u32string& text,
         return matches;
 }
 
+std::vector<PredictiveMatch> Trie::predictive_search(const std::u32string& prefix,
+    std::size_t limit) const {
+        int index = 0;
+        for(char32_t c : prefix) {
+            auto& children = nodes[index].children;
+            std::size_t pos = find_position(children, c);     
+            
+            if (pos < children.size() && children[pos].first == c) {
+                index = children[pos].second;  // child exists: move down
+                continue;
+            } else { // child doesn't exist: return empty vector
+                std::vector<PredictiveMatch> empty;
+                return empty;
+            }
+        }
+
+        // Pre-order DFS of the subtree under the prefix node, with an explicit
+        // stack (a recursive DFS on a 10,000-character key can overflow the stack).
+        // Children are sorted, so pushing them in reverse pops the smallest first,
+        // and results come out in code point order.
+        struct StackItem {
+            int node;
+            char32_t c;         // the character on the edge into this node
+            std::size_t depth;  // key length at this node
+        };
+
+        std::vector<PredictiveMatch> results;
+        std::u32string key = prefix;
+        std::vector<StackItem> stack;
+        stack.push_back({index, 0, prefix.size()});
+        bool at_prefix_node = true;
+
+        while (!stack.empty() && results.size() < limit) {
+            StackItem item = stack.back();
+            stack.pop_back();
+
+            // Rebuild the key: drop whatever the previous branch appended,
+            // then add this node's character.
+            if (!at_prefix_node) {
+                key.resize(item.depth - 1);
+                key.push_back(item.c);
+            }
+            at_prefix_node = false;
+
+            const Node& node = nodes[item.node];
+            if (!node.entry_ids.empty() && !key.empty()) {
+                results.push_back({key, node.entry_ids});
+            }
+
+            for (std::size_t i = node.children.size(); i-- > 0;) {
+                stack.push_back({node.children[i].second, node.children[i].first, key.size() + 1});
+            }
+        }
+
+        return results;
+    }
+
 
 } // namespace jss

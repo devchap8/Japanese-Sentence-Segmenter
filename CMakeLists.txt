@@ -51,6 +51,7 @@ if(JSS_BUILD_TESTS)
   enable_testing()
   add_executable(jss_tests
     tests/test_dictionary.cpp
+    tests/test_predictive.cpp
     tests/test_trie.cpp
     tests/test_utf8.cpp
   )

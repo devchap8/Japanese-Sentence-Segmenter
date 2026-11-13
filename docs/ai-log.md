@@ -14,3 +14,4 @@ The course requires a report section on AI use: where AI tools were used, what t
 | 2026-11-07 | Claude | Backup plan for the `dictionary` branch: trie-backed lookup page | `docs/PLAN-dictionary.md` | |
 | 2026-11-10 | Claude | `dict.tsv` loader and its tests | `core/src/dictionary.cpp`, `core/include/jss/dictionary.hpp`, `tests/test_dictionary.cpp`, `tests/data/mini_dict.tsv` (real entries copied from `dict.tsv`) | |
 | 2026-11-11 | Claude | `jss lookup <word>` CLI command; removed the `version.cpp` placeholder | `cli/main.cpp`, CMake changes | |
+| 2026-11-13 | Claude | Predictive-search tests (random-dictionary oracle), then the subtree DFS in `Trie::predictive_search` | `tests/test_predictive.cpp`; I wrote the interface and the walk down to the prefix node, Claude wrote the explicit-stack DFS | Tests were checked against three deliberately broken implementations first. |

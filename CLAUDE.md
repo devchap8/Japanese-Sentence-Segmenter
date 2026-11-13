@@ -33,7 +33,8 @@ A trie-backed Japanese dictionary lookup page.
 - Done: repo skeleton (CMake, Catch2 v3 via FetchContent, GitHub Actions on Ubuntu and macOS, README, `docs/ai-log.md`); `data/build_dict.py` (JMdict XML + Kanjium pitch data → `data/dict.tsv`, about 219k entries and 500k keys, format in `data/README.md`); UTF-8 decoding and encoding (written by Claude at Devin's request); pointer trie with `insert`, `find`, `common_prefix_search`, written by Devin and passing `tests/test_trie.cpp`.
 - Done: dictionary loader `jss::load_dictionary` (`core/src/dictionary.cpp`, written by Claude at Devin's request; Devin's review pending), tests in `tests/test_dictionary.cpp`. It inserts each spelling once per entry. Full `dict.tsv` (Release, 2026-11-10): 218,995 entries, 499,678 keys, about 0.7 s to load, about 255 MB peak. Debug takes about 10 s. Hidden test `jss_tests "[real]"` loads the real file.
 - Done: `jss lookup [--dict <path>] <word>...` (`cli/main.cpp`, written by Claude): common-prefix matches longest first, entries in file order until ranking lands. Reads the wide command line on Windows so Japanese arguments survive. Default dict path is baked in at build time.
-- Next: predictive search, ranking, baselines.
+- Done: `Trie::predictive_search(prefix, limit)`: walk to the prefix node (Devin), then a pre-order DFS with an explicit stack (Claude, at Devin's request), results in code point order, `limit` counts keys. Tests in `tests/test_predictive.cpp`.
+- Next: ranking, baselines.
 - Open question for the instructor: does a plain trie count as the advanced structure? If not, the double-array trie moves before the trip.
 
 ## Working rules
