@@ -23,6 +23,7 @@ endif()
 # Core library: everything graded lives here.
 add_library(jss_core
   core/src/dictionary.cpp
+  core/src/ranking.cpp
   core/src/trie.cpp
   core/src/utf8.cpp
 )
@@ -52,6 +53,7 @@ if(JSS_BUILD_TESTS)
   add_executable(jss_tests
     tests/test_dictionary.cpp
     tests/test_predictive.cpp
+    tests/test_ranking.cpp
     tests/test_trie.cpp
     tests/test_utf8.cpp
   )

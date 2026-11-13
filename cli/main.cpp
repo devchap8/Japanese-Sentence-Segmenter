@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "jss/dictionary.hpp"
+#include "jss/ranking.hpp"
 #include "jss/utf8.hpp"
 
 #ifdef _WIN32
@@ -82,26 +83,29 @@ void print_entry(const jss::Entry& e) {
     }
 }
 
-// Every dictionary word the query starts with, longest first.
+// Every dictionary word the query starts with, longest first; each word's
+// entries most common first.
 void lookup(const jss::Dictionary& dict, const std::string& query) {
     std::u32string text = jss::decode_utf8(query);
     std::vector<jss::PrefixMatch> matches = dict.trie.common_prefix_search(text, 0);
+    jss::rank_prefix_matches(dict, text, 0, matches);
 
     std::cout << "== " << query << ": " << matches.size()
               << (matches.size() == 1 ? " match\n" : " matches\n");
 
-    for (auto it = matches.rbegin(); it != matches.rend(); ++it) {
-        std::string word = jss::encode_utf8(std::u32string_view(text).substr(0, it->length));
-        std::cout << "\n" << word << "  (" << it->ids.size()
-                  << (it->ids.size() == 1 ? " entry)\n" : " entries)\n");
-        for (int id : it->ids) print_entry(dict.entries[static_cast<std::size_t>(id)]);
+    for (const jss::PrefixMatch& m : matches) {
+        std::string word = jss::encode_utf8(std::u32string_view(text).substr(0, m.length));
+        std::cout << "\n" << word << "  (" << m.ids.size()
+                  << (m.ids.size() == 1 ? " entry)\n" : " entries)\n");
+        for (int id : m.ids) print_entry(dict.entries[static_cast<std::size_t>(id)]);
     }
     std::cout << "\n";
 }
 
 int usage() {
     std::cerr << "usage: jss lookup [--dict <path>] <word>...\n"
-                 "  Lists every dictionary word each <word> starts with, longest first.\n"
+                 "  Lists every dictionary word each <word> starts with, longest first,\n"
+                 "  most common entries first.\n"
                  "  Default dictionary: " JSS_DEFAULT_DICT "\n";
     return 2;
 }
