@@ -35,7 +35,8 @@ A trie-backed Japanese dictionary lookup page.
 - Done: `jss lookup [--dict <path>] <word>...` (`cli/main.cpp`, written by Claude): common-prefix matches longest first, entries in file order until ranking lands. Reads the wide command line on Windows so Japanese arguments survive. Default dict path is baked in at build time.
 - Done: `Trie::predictive_search(prefix, limit)`: walk to the prefix node (Devin), then a pre-order DFS with an explicit stack (Claude, at Devin's request), results in code point order, `limit` counts keys. Tests in `tests/test_predictive.cpp`.
 - Done: ranking (`jss/ranking.hpp`, written by Claude at Devin's request; Devin's review pending): `priority_score` (common + nfXX band, lower is better), `rank_ids`, `rank_prefix_matches` (longest first), `rank_predictive_matches` (score, then length, then code point). Predictive top-k must search wider than k, rank, then cut. `jss lookup` prints ranked results. Tests in `tests/test_ranking.cpp`.
-- Next: baselines (`unordered_set`, sorted array) and the equivalence test.
+- Done: baselines (`jss/baselines.hpp`, written by Claude at Devin's request; Devin's review pending): `HashIndex` (`unordered_map`, hashes every substring length; predictive = full scan + sort) and `SortedArrayIndex` (`build()` once; common-prefix narrows a range one character at a time, O(K log N); predictive = `lower_bound` + walk). Same results and order as `Trie`. `dictionary_keys(dict)` gives the loader's (key, index) pairs for building them. Equivalence test in `tests/test_baselines.cpp`.
+- Next: benchmarks and plots (Nov 14–16).
 - Open question for the instructor: does a plain trie count as the advanced structure? If not, the double-array trie moves before the trip.
 
 ## Working rules
