@@ -40,6 +40,15 @@ if(WIN32)
   target_link_libraries(jss PRIVATE shell32)
 endif()
 
+# Benchmark harness: `jss_bench`, then `python bench/plot.py`. See bench/README.md.
+add_executable(jss_bench bench/bench.cpp)
+target_link_libraries(jss_bench PRIVATE jss_core)
+target_compile_definitions(jss_bench PRIVATE
+  JSS_DEFAULT_DICT="${CMAKE_CURRENT_SOURCE_DIR}/data/dict.tsv"
+  JSS_DEFAULT_CORPUS="${CMAKE_CURRENT_SOURCE_DIR}/data/corpus.txt"
+  JSS_DEFAULT_OUT="${CMAKE_CURRENT_SOURCE_DIR}/bench/results"
+)
+
 if(JSS_BUILD_TESTS)
   include(FetchContent)
   FetchContent_Declare(
