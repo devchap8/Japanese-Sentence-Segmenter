@@ -156,7 +156,7 @@ Today is Nov 7. Graded core is still due before the trip.
 
 ## Risks
 
-- **Does a plain trie count as "advanced, not covered in class"?** CSC 212 may cover tries. If it did, the double-array trie becomes the graded structure and moves before the trip (Nov 14–17), pushing the plots to Nov 18–19. Ask the instructor this week; this decides the schedule.
+- **Resolved (Nov 16): the instructor confirmed that a plain trie counts**, so the double-array trie stays a stretch goal. Original risk: **Does a plain trie count as "advanced, not covered in class"?** CSC 212 may cover tries. If it did, the double-array trie becomes the graded structure and moves before the trip (Nov 14–17), pushing the plots to Nov 18–19. Ask the instructor this week; this decides the schedule.
 - **Scope looks small next to the original proposal.** Say so in the report: the segmenter was scoped down to a dictionary, and the benchmarks and tests are the same depth as planned. If segmenter work resumes on `main` in December, the report can include it as an extension.
 - **Memory.** About 500k keys may make the pointer trie several hundred MB if node vectors over-allocate. Measure it early (Nov 10); `shrink_to_fit` after building, or switch to the double-array trie sooner.
 - **Server startup time.** Parsing 23 MB of TSV at every launch should take a few seconds; acceptable. If not, add a binary cache file later (`data/*.bin` is already git-ignored).

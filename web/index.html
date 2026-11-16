@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trie Dictionary</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <h1>Trie Dictionary <span lang="ja">辞書</span></h1>
+    <p class="tagline">Type Japanese (or romaji). One trie walk finds every word your input starts with.</p>
+  </header>
+
+  <main>
+    <form class="search" id="search-form" role="search" autocomplete="off">
+      <input id="q" name="q" type="search" lang="ja" placeholder="日本語学校 or nihongo"
+             aria-label="Japanese word or text" spellcheck="false" autofocus>
+      <div class="mode" role="radiogroup" aria-label="Search mode">
+        <button type="button" role="radio" data-mode="prefix" aria-checked="true">Words in my input</button>
+        <button type="button" role="radio" data-mode="predictive" aria-checked="false">Words starting with it</button>
+      </div>
+    </form>
+
+    <div class="options">
+      <label><input type="checkbox" id="romaji" checked> Convert romaji to kana</label>
+      <div class="examples" aria-label="Examples">
+        <span>Try:</span>
+        <button type="button" data-q="日本語学校" data-mode="prefix">日本語学校</button>
+        <button type="button" data-q="すもももももももものうち" data-mode="prefix">すもももももも…</button>
+        <button type="button" data-q="はしる" data-mode="prefix">はしる</button>
+        <button type="button" data-q="たべ" data-mode="predictive">たべ…</button>
+        <button type="button" data-q="コーヒー" data-mode="predictive">コーヒー…</button>
+      </div>
+    </div>
+
+    <section id="path" class="path" aria-label="Trie walk" hidden></section>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+    <section id="results" class="results"></section>
+  </main>
+
+  <footer>
+    <p>
+      This site uses the <a href="https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project">JMdict</a>
+      dictionary files. These files are the property of the
+      <a href="https://www.edrdg.org/">Electronic Dictionary Research and Development Group</a>, and are used
+      in conformance with the Group's <a href="https://www.edrdg.org/edrdg/licence.html">licence</a> (CC BY-SA 4.0).
+      Pitch accent data from <a href="https://github.com/mifunetoshiro/kanjium">Kanjium</a> (CC BY-SA 4.0);
+      pitch accent notation provided by Uros O.
+    </p>
+    <p>CSC 212 final project, University of Rhode Island, Fall 2026.</p>
+  </footer>
+
+  <script src="https://unpkg.com/wanakana@5.3.1/wanakana.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

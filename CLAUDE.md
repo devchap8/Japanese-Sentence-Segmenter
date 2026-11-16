@@ -12,7 +12,7 @@ A trie-backed Japanese dictionary lookup page.
 - The user types Japanese. Common-prefix search lists every word the input starts with, longest first (日本語学校 → 日, 日本, 日本語, 日本語学校). Predictive search lists words that start with the input. Results are ranked by JMdict priority tags.
 - A cpp-httplib server (`jss_server`) loads the dictionary once and answers `GET /api/search?q=…&mode=prefix|predictive`. It also serves the static page in `web/` (plain JS, no build step).
 - Page: result cards (reading, pitch, part of speech, glosses), romaji input via wanakana, example buttons, and a trie path view for the demo. The JMdict/EDRDG and Kanjium acknowledgement goes in the footer.
-- A double-array trie is planned if the instructor says a plain trie doesn't count as "advanced, not covered in class"; otherwise it's a stretch goal.
+- The instructor confirmed that a plain trie counts as the advanced data structure, so the double-array trie is a stretch goal (after the trip, if there is time).
 
 ## Rubric essentials
 
@@ -31,14 +31,16 @@ A trie-backed Japanese dictionary lookup page.
 ## Status
 
 - Done: repo skeleton (CMake, Catch2 v3 via FetchContent, GitHub Actions on Ubuntu and macOS, README, `docs/ai-log.md`); `data/build_dict.py` (JMdict XML + Kanjium pitch data → `data/dict.tsv`, about 219k entries and 500k keys, format in `data/README.md`); UTF-8 decoding and encoding (written by Claude at Devin's request); pointer trie with `insert`, `find`, `common_prefix_search`, written by Devin and passing `tests/test_trie.cpp`.
-- Done: dictionary loader `jss::load_dictionary` (`core/src/dictionary.cpp`, written by Claude at Devin's request; Devin's review pending), tests in `tests/test_dictionary.cpp`. It inserts each spelling once per entry. Full `dict.tsv` (Release, 2026-11-10): 218,995 entries, 499,678 keys, about 0.7 s to load, about 255 MB peak. Debug takes about 10 s. Hidden test `jss_tests "[real]"` loads the real file.
+- Done: dictionary loader `jss::load_dictionary` (`core/src/dictionary.cpp`, written by Claude at Devin's request; reviewed by Devin), tests in `tests/test_dictionary.cpp`. It inserts each spelling once per entry. Full `dict.tsv` (Release, 2026-11-10): 218,995 entries, 499,678 keys, about 0.7 s to load, about 255 MB peak. Debug takes about 10 s. Hidden test `jss_tests "[real]"` loads the real file.
 - Done: `jss lookup [--dict <path>] <word>...` (`cli/main.cpp`, written by Claude): common-prefix matches longest first, entries in file order until ranking lands. Reads the wide command line on Windows so Japanese arguments survive. Default dict path is baked in at build time.
 - Done: `Trie::predictive_search(prefix, limit)`: walk to the prefix node (Devin), then a pre-order DFS with an explicit stack (Claude, at Devin's request), results in code point order, `limit` counts keys. Tests in `tests/test_predictive.cpp`.
-- Done: ranking (`jss/ranking.hpp`, written by Claude at Devin's request; Devin's review pending): `priority_score` (common + nfXX band, lower is better), `rank_ids`, `rank_prefix_matches` (longest first), `rank_predictive_matches` (score, then length, then code point). Predictive top-k must search wider than k, rank, then cut. `jss lookup` prints ranked results. Tests in `tests/test_ranking.cpp`.
-- Done: baselines (`jss/baselines.hpp`, written by Claude at Devin's request; Devin's review pending): `HashIndex` (`unordered_map`, hashes every substring length; predictive = full scan + sort) and `SortedArrayIndex` (`build()` once; common-prefix narrows a range one character at a time, O(K log N); predictive = `lower_bound` + walk). Same results and order as `Trie`. `dictionary_keys(dict)` gives the loader's (key, index) pairs for building them. Equivalence test in `tests/test_baselines.cpp`.
+- Done: ranking (`jss/ranking.hpp`, written by Claude at Devin's request; reviewed by Devin): `priority_score` (common + nfXX band, lower is better), `rank_ids`, `rank_prefix_matches` (longest first), `rank_predictive_matches` (score, then length, then code point). Predictive top-k must search wider than k, rank, then cut. `jss lookup` prints ranked results. Tests in `tests/test_ranking.cpp`.
+- Done: baselines (`jss/baselines.hpp`, written by Claude at Devin's request; reviewed by Devin): `HashIndex` (`unordered_map`, hashes every substring length; predictive = full scan + sort) and `SortedArrayIndex` (`build()` once; common-prefix narrows a range one character at a time, O(K log N); predictive = `lower_bound` + walk). Same results and order as `Trie`. `dictionary_keys(dict)` gives the loader's (key, index) pairs for building them. Equivalence test in `tests/test_baselines.cpp`.
 - Done: benchmarks and plots (`bench/`, written by Claude; see `bench/README.md`). `jss_bench` (Release build in `build-release/`) writes `bench/results/*.csv`; `bench/plot.py` (matplotlib, in a git-ignored `.venv`) writes `docs/figures/*.png`. Corpus: `bench/fetch_corpus.py` → `data/corpus.txt` (git-ignored). Results (2026-11-16, MSVC Release): common-prefix scan of 1M characters takes 201 ms with the trie, 668 ms with the sorted array, 6.4 s with the hash map; heap 83 / 38 / 53 MB; predictive search: sorted array about 1.5–2.7× faster than the trie DFS, hash about 25 ms flat.
-- Next: `jss_server` and a basic page (Nov 17–19), then merge into `main`.
-- Open question for the instructor: does a plain trie count as the advanced structure? If not, the double-array trie moves before the trip.
+- Done: `jss_server` (`server/main.cpp`, cpp-httplib v0.20.1) and `jss_api` (`server/api.cpp`, nlohmann/json v3.11.3; written by Claude). `GET /api/search?q=&mode=prefix|predictive&limit=` returns ranked matches with full entries, plus `path`/`walk_stopped` for the trie walk view (computed with `predictive_search(prefix, 1)`, since the trie doesn't expose its walk). Predictive mode ranks every match, then cuts to `limit`. Katakana queries with no matches fall back to hiragana. Queries are cut at 64 code points. `GET /api/health`. Binds 127.0.0.1:8080 by default (`--host 0.0.0.0` for other machines). Tests in `tests/test_api.cpp` (no network).
+- Done: basic page in `web/` (Claude): search box, mode toggle, example buttons, result cards (headword, readings with downstep numbers, POS chips, glosses, common badge), a basic trie walk view, romaji input via wanakana 5.3.1 from unpkg (the page works without it), `?q=&mode=` in the URL, light and dark mode, JMdict/EDRDG and Kanjium acknowledgement in the footer. For December polish: pitch drawn as a line, a fuller trie path view, and a local copy of wanakana so the showcase works offline.
+- `dictionary` merged into `main` (2026-11-16).
+- Next: `REPORT.md` draft (Nov 20). Figures are in `docs/figures/`.
 
 ## Working rules
 
@@ -56,5 +58,5 @@ cmake -S . -B build
 cmake --build build
 ctest --test-dir build --output-on-failure
 ./build/jss lookup 日本語学校
-./build/jss_server               # planned; then open http://localhost:8080
+./build/jss_server               # then open http://localhost:8080
 ```
